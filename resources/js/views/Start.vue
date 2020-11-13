@@ -1,6 +1,6 @@
 <template>
     <div>
-        Routing working
+
     </div>
 </template>
 <script>
