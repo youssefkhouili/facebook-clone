@@ -1916,6 +1916,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -19643,7 +19652,28 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "flex flex-col flex-1 h-screen overflow-y-hidden" },
-    [_c("AppNav"), _vm._v(" "), _c("router-view")],
+    [
+      _c("AppNav"),
+      _vm._v(" "),
+      _c("div", { staticClass: "flex overflow-y-hidden flex1" }, [
+        _c("div", { staticClass: "w-1/3" }, [
+          _vm._v("\n            Sidebar\n        ")
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "overflow-x-hidden w-2/3" },
+          [
+            _c("router-view"),
+            _vm._v(" "),
+            _vm._l(100, function(i) {
+              return _c("p", [_vm._v("hello world " + _vm._s(i))])
+            })
+          ],
+          2
+        )
+      ])
+    ],
     1
   )
 }
@@ -19860,7 +19890,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", [_vm._v("\n    helo there\n")])
 }
 var staticRenderFns = []
 render._withStripped = true
