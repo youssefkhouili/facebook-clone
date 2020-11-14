@@ -19,8 +19,8 @@
                 <div class="text-2xl">{{ post.data.attributes.body }}</div>
             </div>
         </div>
-        <div class="w-full mb-4">
-            <img :src="'/img/post-pic.png'" class="w-full" alt="Post Picture">
+        <div class="w-full mb-4" v-if="post.data.attributes.post_img">
+            <img :src="post.data.attributes.post_img" class="w-full" alt="Post Picture">
         </div>
         <div class="flex justify-between m-4">
             <button class="flex items-center" href="#">

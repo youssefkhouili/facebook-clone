@@ -20108,12 +20108,17 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "w-full mb-4" }, [
-        _c("img", {
-          staticClass: "w-full",
-          attrs: { src: "/img/post-pic.png", alt: "Post Picture" }
-        })
-      ]),
+      _vm.post.data.attributes.post_img
+        ? _c("div", { staticClass: "w-full mb-4" }, [
+            _c("img", {
+              staticClass: "w-full",
+              attrs: {
+                src: _vm.post.data.attributes.post_img,
+                alt: "Post Picture"
+              }
+            })
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _c("div", { staticClass: "flex justify-between m-4" }, [
         _c(
