@@ -20,4 +20,11 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getFormattedDateAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
+    protected $appends = ['formatted_date'];
 }
