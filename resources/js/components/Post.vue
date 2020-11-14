@@ -8,9 +8,7 @@
                         <div>
                             <a href="#" class="text-sm font-bold tracking-wider">{{ post.data.attributes.posted_by.data.attributes.name }}</a>
                         </div>
-                        <span class="font-sm text-gray-600">
-                            {{ post.data.attributes.formatted_date }}
-                        </span>
+                        <span class="font-sm text-gray-600">{{ post.data.attributes.published_at }}</span>
                     </div>
                 </div>
                 <div>
@@ -18,10 +16,7 @@
                 </div>
             </div>
             <div class="mx-4 my-1">
-                <div class="text-2xl">
-                    {{ post.data.attributes.body }}
-                    <!-- Me on the first day at my first tech job: -->
-                </div>
+                <div class="text-2xl">{{ post.data.attributes.body }}</div>
             </div>
         </div>
         <div class="w-full mb-4">

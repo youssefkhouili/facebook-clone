@@ -21,7 +21,7 @@ class Post extends JsonResource
                 'attributes' => [
                     'posted_by' => new User($this->user),
                     'body'  => $this->body,
-                    'formatted_date'    => $this->formatted_date
+                    'published_at'    => $this->formatted_published_date
                 ]
             ],
             'links' => [

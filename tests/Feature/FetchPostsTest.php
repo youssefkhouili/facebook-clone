@@ -29,7 +29,8 @@ class FetchPostsTest extends TestCase
                         'type'          => 'posts',
                         'post_id'       => $posts->last()->id,
                         'attributes'    => [
-                            'body'  => $posts->last()->body
+                            'body'  => $posts->last()->body,
+                            'published_at'  => $posts->last()->formatted_published_date
                         ]
                     ],
                 ],
@@ -38,7 +39,8 @@ class FetchPostsTest extends TestCase
                         'type'          => 'posts',
                         'post_id'       => $posts->first()->id,
                         'attributes'    => [
-                            'body'  => $posts->first()->body
+                            'body'  => $posts->first()->body,
+                            'published_at'  => $posts->first()->formatted_published_date
                         ]
                     ],
                 ],

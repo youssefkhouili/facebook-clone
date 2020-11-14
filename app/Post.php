@@ -21,7 +21,7 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getFormattedDateAttribute()
+    public function getFormattedPublishedDateAttribute()
     {
         return $this->created_at->diffForHumans();
     }
