@@ -1,7 +1,8 @@
 <template>
     <div class="flex flex-col items-center py-4">
         <NewPost />
-        <Post v-for="post in posts.data" :key="post.data.post_id" :post="post"/>
+        <span v-if="loading" class="mt-2">The posts is loading</span>
+        <Post v-else v-for="post in posts.data" :key="post.data.post_id" :post="post"/>
     </div>
 </template>
 
@@ -15,13 +16,16 @@ export default {
     },
     data() {
         return {
-            posts: null
+            posts: null,
+            loading: true
         }
     },
     mounted() {
         axios.get('/api/posts').then((response) => {
 
             this.posts = response.data
+
+            this.loading = false
 
         }).catch((error) => {
 

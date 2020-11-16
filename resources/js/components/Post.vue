@@ -6,7 +6,7 @@
                     <img :src="'/img/profile.jpg'" class="w-10 h-10 object-cover rounded-full mr-4" alt="User Profile">
                     <div>
                         <div>
-                            <a href="#" class="text-sm font-bold tracking-wider">{{ post.data.attributes.posted_by.data.attributes.name }}</a>
+                            <a href="#" class="text-sm font-bold tracking-wider">{{ post.data.attributes.posted_by.data.attributes.name | capitalize }}</a>
                         </div>
                         <span class="font-sm text-gray-600">{{ post.data.attributes.published_at }}</span>
                     </div>
@@ -50,6 +50,11 @@
 <script>
 export default {
     props: ['post'],
+    filters: {
+        capitalize(value) {
+            return value.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ')
+        }
+    }
 }
 
 </script>

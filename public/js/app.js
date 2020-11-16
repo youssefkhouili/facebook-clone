@@ -2039,7 +2039,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['post']
+  props: ['post'],
+  filters: {
+    capitalize: function capitalize(value) {
+      return value.toLowerCase().split(' ').map(function (word) {
+        return word.charAt(0).toUpperCase() + word.substring(1);
+      }).join(' ');
+    }
+  }
 });
 
 /***/ }),
@@ -2061,6 +2068,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2069,7 +2077,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      posts: null
+      posts: null,
+      loading: true
     };
   },
   mounted: function mounted() {
@@ -2077,6 +2086,7 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get('/api/posts').then(function (response) {
       _this.posts = response.data;
+      _this.loading = false;
     })["catch"](function (error) {
       console.log(error);
     });
@@ -20085,7 +20095,10 @@ var render = function() {
                   [
                     _vm._v(
                       _vm._s(
-                        _vm.post.data.attributes.posted_by.data.attributes.name
+                        _vm._f("capitalize")(
+                          _vm.post.data.attributes.posted_by.data.attributes
+                            .name
+                        )
                       )
                     )
                   ]
@@ -20316,9 +20329,11 @@ var render = function() {
     [
       _c("NewPost"),
       _vm._v(" "),
-      _vm._l(_vm.posts.data, function(post) {
-        return _c("Post", { key: post.data.post_id, attrs: { post: post } })
-      })
+      _vm.loading
+        ? _c("span", { staticClass: "mt-2" }, [_vm._v("The posts is loading")])
+        : _vm._l(_vm.posts.data, function(post) {
+            return _c("Post", { key: post.data.post_id, attrs: { post: post } })
+          })
     ],
     2
   )
