@@ -50,11 +50,6 @@
 <script>
 export default {
     props: ['post'],
-    filters: {
-        capitalize(value) {
-            return value.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' ')
-        }
-    }
 }
 
 </script>

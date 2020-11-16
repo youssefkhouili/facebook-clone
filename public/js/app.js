@@ -2039,14 +2039,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['post'],
-  filters: {
-    capitalize: function capitalize(value) {
-      return value.toLowerCase().split(' ').map(function (word) {
-        return word.charAt(0).toUpperCase() + word.substring(1);
-      }).join(' ');
-    }
-  }
+  props: ['post']
 });
 
 /***/ }),
@@ -2105,6 +2098,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components */ "./resources/js/components/index.js");
 //
 //
 //
@@ -2114,12 +2108,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       user: null,
-      loading: true
+      posts: null,
+      user_loading: true,
+      post_loading: true
     };
+  },
+  components: {
+    Post: _components__WEBPACK_IMPORTED_MODULE_0__["Post"]
   },
   mounted: function mounted() {
     var _this = this;
@@ -2130,14 +2141,14 @@ __webpack_require__.r(__webpack_exports__);
     })["catch"](function (error) {
       console.log('Unable to find such a user!');
     })["finally"](function () {
-      _this.loading = false;
-    }), axios.get('/api/posts/' + this.$route.params.userId).then(function (_ref2) {
+      _this.user_loading = false;
+    }), axios.get('/api/users/' + this.$route.params.userId + '/posts').then(function (_ref2) {
       var data = _ref2.data;
       _this.posts = data;
     })["catch"](function (error) {
       console.log('Sorry theres no post to see!');
     })["finally"](function () {
-      _this.loading = false;
+      _this.post_loading = false;
     });
   }
 });
@@ -20409,21 +20420,74 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.loading
-      ? _c("span", [_vm._v("Loading User page")])
-      : _c("div", { staticClass: "w-100 h-64 overflow-hidden" }, [
-          _c("img", {
-            staticClass: "object-cover w-full",
-            attrs: {
-              src: "/img/background-profile.jpg",
-              alt: "background-profile"
-            }
-          })
-        ])
-  ])
+  return _c(
+    "div",
+    { staticClass: "flex flex-col items-center" },
+    [
+      _c("div", { staticClass: "relative" }, [
+        _vm.user_loading
+          ? _c("span", [_vm._v("Loading User page")])
+          : _c("div", { staticClass: "w-100 h-64 overflow-hidden z-1" }, [
+              _c("img", {
+                staticClass: "object-cover w-full",
+                attrs: {
+                  src: "/img/background-profile.jpg",
+                  alt: "background-profile"
+                }
+              })
+            ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "ml-6 absolute flex items-center bottom-0 left-0 -mb-8 z-2"
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "span",
+              { staticClass: "ml-4 tracking-wider text-3xl text-gray-100" },
+              [
+                _vm._v(
+                  _vm._s(_vm._f("capitalize")(_vm.user.data.attributes.name))
+                )
+              ]
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.post_loading
+        ? _c("span", { staticClass: "mt-2" }, [_vm._v("The posts is loading")])
+        : _vm._l(_vm.posts.data, function(post) {
+            return _c("Post", { key: post.data.post_id, attrs: { post: post } })
+          }),
+      _vm._v(" "),
+      !_vm.post_loading && _vm.posts.data.length < 1
+        ? _c("span", { staticClass: "text-2xl mt-8" }, [
+            _vm._v("User Has no Posts")
+          ])
+        : _vm._e()
+    ],
+    2
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "w-32" }, [
+      _c("img", {
+        staticClass:
+          "object-cover border-4 border-gray-200 w-32 rounded-full shadow-lg",
+        attrs: { src: "/img/profile.jpg", alt: "user profile image" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -35760,6 +35824,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter('capitalize', function (value) {
+  return value.toLowerCase().split(' ').map(function (word) {
+    return word.charAt(0).toUpperCase() + word.substring(1);
+  }).join(' ');
+});
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   components: {
