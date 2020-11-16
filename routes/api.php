@@ -9,7 +9,8 @@ Route::middleware('auth:api')->group(function () {
     // Route::post('posts', 'PostController@store');
 
     Route::apiResources([
-        'posts' => 'PostController',
-        'users' => 'UserController'
+        '/posts'              => 'PostController',
+        '/users'              => 'UserController',
+        '/users/{user}/posts' => 'UserPostController'
     ]);
 });

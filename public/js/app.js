@@ -2131,6 +2131,13 @@ __webpack_require__.r(__webpack_exports__);
       console.log('Unable to find such a user!');
     })["finally"](function () {
       _this.loading = false;
+    }), axios.get('/api/posts/' + this.$route.params.userId).then(function (_ref2) {
+      var data = _ref2.data;
+      _this.posts = data;
+    })["catch"](function (error) {
+      console.log('Sorry theres no post to see!');
+    })["finally"](function () {
+      _this.loading = false;
     });
   }
 });

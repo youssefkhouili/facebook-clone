@@ -22,6 +22,13 @@ export default {
             console.log('Unable to find such a user!')
         }).finally(() => {
             this.loading = false
+        }),
+        axios.get('/api/posts/' + this.$route.params.userId).then(({data}) => {
+            this.posts = data
+        }).catch((error) => {
+            console.log('Sorry theres no post to see!')
+        }).finally(() => {
+            this.loading = false
         })
     }
 }
