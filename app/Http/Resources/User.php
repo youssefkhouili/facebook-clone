@@ -23,7 +23,7 @@ class User extends JsonResource
                 ]
             ],
             'links' => [
-                'self'  => url('/posts/' . $this->id)
+                'self'  => url('/users/' . $this->id)
             ]
         ];
     }
