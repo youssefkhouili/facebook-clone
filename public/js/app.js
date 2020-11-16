@@ -2086,9 +2086,10 @@ __webpack_require__.r(__webpack_exports__);
 
     axios.get('/api/posts').then(function (response) {
       _this.posts = response.data;
-      _this.loading = false;
     })["catch"](function (error) {
-      console.log(error);
+      console.log('Sorry theres no post to see!');
+    })["finally"](function () {
+      _this.loading = false;
     });
   }
 });

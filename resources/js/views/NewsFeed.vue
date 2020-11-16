@@ -22,16 +22,12 @@ export default {
     },
     mounted() {
         axios.get('/api/posts').then((response) => {
-
             this.posts = response.data
-
-            this.loading = false
-
         }).catch((error) => {
-
-            console.log(error)
-
-        });
+            console.log('Sorry theres no post to see!')
+        }).finally(() => {
+            this.loading = false
+        })
     }
 }
 </script>
