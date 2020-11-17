@@ -1976,7 +1976,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      user: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/api/auth-user').then(function (_ref) {
+      var data = _ref.data;
+      _this.user = data;
+    })["catch"](function (error) {
+      console.log('Can not load any user');
+    });
+  }
+});
 
 /***/ }),
 
@@ -19957,7 +19973,7 @@ var render = function() {
             "router-link",
             {
               staticClass: "px-6 flex items-center h-full",
-              attrs: { to: "/" }
+              attrs: { to: "/users/" + _vm.user.data.user_id }
             },
             [
               _c("img", {
