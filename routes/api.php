@@ -8,6 +8,8 @@ Route::middleware('auth:api')->group(function () {
     // Route::get('posts', 'PostController@index');
     // Route::post('posts', 'PostController@store');
 
+    Route::get('auth-user', 'AuthUserController@show');
+
     Route::apiResources([
         '/posts'              => 'PostController',
         '/users'              => 'UserController',
