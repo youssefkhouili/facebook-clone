@@ -16,6 +16,9 @@ export default {
     components: {
         AppNav:Nav,
         AppSidebar:Sidebar,
+    },
+    mounted() {
+        this.$store.dispatch('fetchAuthUser')
     }
 }
 </script>
