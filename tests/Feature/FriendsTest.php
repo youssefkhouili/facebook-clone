@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -60,6 +61,42 @@ class FriendsTest extends TestCase
                 'code'  => '404',
                 'title' => 'user Not Found',
                 'detail' => 'Unable to locate the user with the given informations'
+            ]
+        ]);
+    }
+    /** @test */
+    public function friend_request_can_be_accepted()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->actingAs($user = factory(User::class)->create(), 'api');
+        $friendUser = factory(User::class)->create();
+
+        $this->post('/api/friend-request', [
+            'friend_id' => $friendUser->id
+        ])->assertStatus(200);
+
+        $response = $this->actingAs($friendUser, 'api')
+            ->post('/api/friend-request-response', [
+                'user_id'   => $user->id,
+                'status'    => 1
+            ])->assertStatus(200);
+
+        $friendRequest = \App\Friend::first();
+        $this->assertNotNull($friendRequest->confirmed_at);
+        $this->assertEquals(now(), $friendRequest->confirmed_at);
+        $this->assertEquals(1, $friendRequest->status);
+
+        $response->assertJson([
+            'data' => [
+                'type'  => 'friend-request',
+                'friend_request_id' => $friendRequest->id,
+                'attributes'    => [
+                    'confirmed_at'  => $friendRequest->formatted_date
+                ],
+            ],
+            'links' => [
+                'self'  => url('/users/' . $friendUser->id)
             ]
         ]);
     }
