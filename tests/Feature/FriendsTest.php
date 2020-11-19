@@ -13,7 +13,6 @@ class FriendsTest extends TestCase
     /** @test*/
     public function a_user_can_send_friend_request()
     {
-        $this->withoutExceptionHandling();
 
         $this->actingAs($user = factory(User::class)->create(), 'api');
         $friendUser = factory(User::class)->create();
@@ -39,6 +38,28 @@ class FriendsTest extends TestCase
             ],
             'links' => [
                 'self'  => url('/users/' . $friendUser->id)
+            ]
+        ]);
+    }
+
+    /** @test */
+    public function only_valid_users_can_be_friend_requested()
+    {
+
+        $this->actingAs($user = factory(User::class)->create(), 'api');
+
+        $response = $this->post('/api/friend-request', [
+            'friend_id' => 100 // Id doesn't exists
+        ])->assertStatus(404);
+
+        $friendRequest = \App\Friend::first();
+
+        $this->assertNull($friendRequest);
+        $response->assertJson([
+            'errors'    => [
+                'code'  => '404',
+                'title' => 'user Not Found',
+                'detail' => 'Unable to locate the user with the given informations'
             ]
         ]);
     }
