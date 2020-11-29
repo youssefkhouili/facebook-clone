@@ -4,6 +4,5 @@
             <h2 class="font-bold text-3xl">Home</h2>
             <router-link to="/" class="mt-2">Create</router-link>
         </div>
-
     </div>
 </template>

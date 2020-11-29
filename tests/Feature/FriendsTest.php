@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Friend;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -97,6 +98,28 @@ class FriendsTest extends TestCase
             ],
             'links' => [
                 'self'  => url('/users/' . $friendUser->id)
+            ]
+        ]);
+    }
+    /** @test */
+    public function only_valid_friend_requests_can_be_accepted()
+    {
+        $friendUser = factory(User::class)->create();
+
+        $response = $this->actingAs($friendUser, 'api')
+            ->post('/api/friend-request-response', [
+                'user_id'   => 123,
+                'status'    => 1
+            ])
+            ->assertStatus(404);
+
+        $this->assertNull(Friend::first());
+
+        $response->assertJson([
+            'errors'    => [
+                'code'  => '404',
+                'title' => 'Friend Request Not Found',
+                'detail' => 'Unable to locate the Friend Request with the given informations'
             ]
         ]);
     }
