@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FriendRequest extends FormRequest
@@ -23,8 +24,9 @@ class FriendRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
-            'friend_id' => ''
+            'friend_id' => 'required'
         ];
     }
 }
