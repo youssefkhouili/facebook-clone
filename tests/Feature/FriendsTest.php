@@ -164,4 +164,18 @@ class FriendsTest extends TestCase
 
         $this->assertArrayHasKey('friend_id', $stringResponse['errors']['meta']);
     }
+    /** @test */
+    public function a_user_id_and_status_is_required_for_friend_request_responses()
+    {
+        $response = $this->actingAs($user = factory(User::class)->create(), 'api')
+            ->post('/api/friend-request-response', [
+                'user_id'   => '',
+                'status'    => ''
+            ])->assertStatus(422);
+
+        $stringResponse = json_decode($response->getContent(), true);
+
+        $this->assertArrayHasKey('user_id', $stringResponse['errors']['meta']);
+        $this->assertArrayHasKey('status', $stringResponse['errors']['meta']);
+    }
 }

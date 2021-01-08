@@ -17,16 +17,13 @@ class FriendRequestController extends Controller
     public function store()
     {
 
-        try {
-            $data = request()->validate([
-                'friend_id' => 'required'
-            ]);
-        } catch (ValidationException $e) {
-            throw new ValidationErrorException(json_encode($e->errors()));
-        }
+        $data = request()->validate([
+            'friend_id' => 'required'
+        ]);
+
 
         try {
-            User::findOrFail($data['friend_id'])
+            User::findOrFail($request['friend_id'])
                 ->friends()->attach(auth()->user());
         } catch (ModelNotFoundException $e) {
             throw new UserNotFoundException();
@@ -34,7 +31,7 @@ class FriendRequestController extends Controller
 
         return new ResourcesFriend(
             Friend::where('user_id', auth()->user()->id)
-                ->where('friend_id', $data['friend_id'])
+                ->where('friend_id', $request['friend_id'])
                 ->first()
         );
     }
