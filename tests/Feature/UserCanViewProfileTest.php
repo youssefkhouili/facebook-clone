@@ -18,7 +18,6 @@ class UserCanViewProfileTest extends TestCase
     {
         $this->withoutExceptionHandling();
         $this->actingAs($user = factory(User::class)->create(), 'api');
-        // $post = factory(Post::class)->create();
 
         $response = $this->get('api/users/' . $user->id);
 
