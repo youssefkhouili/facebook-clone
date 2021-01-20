@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FriendRequestController extends Controller
 {
-    public function store()
+    public function store(Request $request)
     {
 
         $data = request()->validate([

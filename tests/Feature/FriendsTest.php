@@ -114,28 +114,13 @@ class FriendsTest extends TestCase
         ])->assertStatus(200);
 
         $response = $this->actingAs($friendUser, 'api')
-            ->delete('/api/friend-request-response', [
+            ->delete('/api/friend-request-response/delete', [
                 'user_id'   => $user->id,
-                'status'    => 1
-            ])->assertStatus(200);
+            ])->assertStatus(204);
 
-        $friendRequest = \App\Friend::first();
-        $this->assertNotNull($friendRequest->confirmed_at);
-        $this->assertEquals(now(), $friendRequest->confirmed_at);
-        $this->assertEquals(1, $friendRequest->status);
-
-        $response->assertJson([
-            'data' => [
-                'type'  => 'friend-request',
-                'friend_request_id' => $friendRequest->id,
-                'attributes'    => [
-                    'confirmed_at'  => $friendRequest->formatted_date
-                ],
-            ],
-            'links' => [
-                'self'  => url('/users/' . $friendUser->id)
-            ]
-        ]);
+        $friendRequest = Friend::first();
+        $this->assertNull($friendRequest);
+        $response->assertNoContent();
     }
     /** @test */
     public function only_valid_friend_requests_can_be_accepted()
@@ -189,6 +174,34 @@ class FriendsTest extends TestCase
         ]);
     }
     /** @test */
+
+    public function only_the_recipient_can_ignore_a_friend_request()
+    {
+        $this->actingAs($user = factory(User::class)->create(), 'api');
+        $friendUser = factory(User::class)->create();
+
+        $this->post('/api/friend-request', [
+            'friend_id' => $friendUser->id
+        ])->assertStatus(200);
+
+        $response = $this->actingAs(factory(User::class)->create(), 'api')
+            ->delete('/api/friend-request-response/delete', [
+                'user_id'   => $user->id,
+            ])->assertStatus(404);
+
+        $friendRequest = Friend::first();
+        $this->assertEquals($friendRequest->formatted_date, null);
+        $this->assertEquals($friendRequest->status, 0);
+
+        $response->assertJson([
+            'errors'    => [
+                'code'  => '404',
+                'title' => 'Friend Request Not Found',
+                'detail' => 'Unable to locate the Friend Request with the given informations'
+            ]
+        ]);
+    }
+    /** @test */
     public function a_friend_id_is_required_for_friend_requests()
     {
         $response = $this->actingAs($user = factory(User::class)->create(), 'api')
@@ -213,6 +226,18 @@ class FriendsTest extends TestCase
 
         $this->assertArrayHasKey('user_id', $stringResponse['errors']['meta']);
         $this->assertArrayHasKey('status', $stringResponse['errors']['meta']);
+    }
+    /** @test */
+    public function a_user_id_is_required_for_ignoring_a_friend_request_responses()
+    {
+        $response = $this->actingAs($user = factory(User::class)->create(), 'api')
+            ->delete('/api/friend-request-response/delete', [
+                'user_id'   => '',
+            ])->assertStatus(422);
+
+        $stringResponse = json_decode($response->getContent(), true);
+
+        $this->assertArrayHasKey('user_id', $stringResponse['errors']['meta']);
     }
     /** @test */
     public function a_friendship_is_retrieved_when_fetching_the_profile()
