@@ -11,6 +11,10 @@
                 </div>
                 <span class="ml-4 tracking-wider text-3xl text-gray-100">{{ user.data.attributes.name | capitalize }}</span>
             </div>
+            <div class="ml-6 absolute flex items-center bottom-0 right-0 mb-4 mr-12 z-2">
+                <button class="py-1 px-3 bg-gray-400 rounded">Add Friend</button>
+            </div>
+
         </div>
         <span v-if="post_loading" class="mt-2">The posts is loading</span>
         <Post v-else v-for="post in posts.data" :key="post.data.post_id" :post="post"/>
@@ -19,13 +23,12 @@
 </template>
 
 <script>
-import {Post} from '../../components'
+import {Post} from '../../components';
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            user: null,
             posts: null,
-            user_loading: true,
             post_loading: true
         }
     },
@@ -33,19 +36,18 @@ export default {
         Post
     },
     mounted() {
-        axios.get('/api/users/' + this.$route.params.userId).then(({data}) => {
-            this.user = data
-        }).catch((error) => {
-            console.log('Unable to find such a user!')
-        }).finally(() => {
-            this.user_loading = false
-        }),
+        this.$store.dispatch('fetchUser', this.$route.params.userId);
         axios.get('/api/users/' + this.$route.params.userId + '/posts').then(({data}) => {
             this.posts = data
         }).catch((error) => {
             console.log('Sorry theres no post to see!')
         }).finally(() => {
             this.post_loading = false
+        })
+    },
+    computed:{
+        ...mapGetters({
+            user: 'user'
         })
     }
 }
